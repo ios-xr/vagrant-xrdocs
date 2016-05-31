@@ -1,0 +1,6 @@
+!! XR configuration
+!
+grpc-yo
+  port 57789
+!
+end
