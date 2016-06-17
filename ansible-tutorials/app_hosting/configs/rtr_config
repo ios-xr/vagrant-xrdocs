@@ -1,0 +1,9 @@
+hostname xr
+!
+interface GigabitEthernet0/0/0/0
+ ipv4 address 10.1.1.20 255.255.255.0
+  no shutdown
+  !
+!
+end
+

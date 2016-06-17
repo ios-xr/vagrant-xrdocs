@@ -1,0 +1,26 @@
+---
+- hosts: ss-xr
+
+  tasks:
+  - copy: src=/home/vagrant/cn.xml dest=/home/vagrant/cn.xml owner=vagrant
+
+  - name: Creates directory
+    file: path=/misc/app_host/scratch/rootfs state=directory
+
+  - command: tar -zxf /misc/app_host/scratch/cn_rootfs.tar.gz -C /misc/app_host/scratch/rootfs
+    become: yes
+    register: output
+    ignore_errors: yes
+  - debug: var=output.stdout_lines
+
+  - shell: sudo -i virsh  create /home/vagrant/cn.xml
+    args:
+      warn: no
+    register: output
+  - debug: var=output.stdout_lines
+
+  - shell: sudo -i virsh list
+    args:
+      warn: no
+    register: output
+  - debug: var=output.stdout_lines

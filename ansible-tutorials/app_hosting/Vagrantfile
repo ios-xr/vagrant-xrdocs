@@ -1,0 +1,46 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+Vagrant.configure(2) do |config|
+
+  config.vm.provision "shell", inline: "echo Hello User"
+
+  config.vm.define "ubuntu" do |ubuntu|
+    ubuntu.vm.box = "ubuntu/trusty64"
+    ubuntu.vm.network :private_network, virtualbox__intnet: "link1", ip: "10.1.1.10"
+    # ansible_env and ansible_hosts files suited for current Ansible setup
+    ubuntu.vm.provision "file", source: "configs/ansible_env", destination: "/home/vagrant/ansible_env"
+    ubuntu.vm.provision "file", source: "configs/ansible_hosts", destination: "/home/vagrant/ansible_hosts"
+
+    # cn.xml - xml descript to run container
+    ubuntu.vm.provision "file", source: "configs/cn.xml", destination: "/home/vagrant/cn.xml"
+    
+    # playbook to deploy container
+    ubuntu.vm.provision "file", source: "configs/deploy_container.yml", destination: "/home/vagrant/deploy_container.yml"
+    ubuntu.vm.provision :shell, path: "ubuntu.sh", privileged: false
+  
+    ubuntu.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id, "--nictype1", "virtio" ]
+      vb.customize ["modifyvm", :id, "--nictype2", "virtio" ]
+    end
+  end
+
+  config.vm.define "xr" do |xr|
+    xr.vm.box = "IOS-XRv"
+    xr.vm.network :private_network, auto_config: false, virtualbox__intnet: "link1", ip: "10.1.1.20"
+    xr.vm.network "forwarded_port", id: "container-ssh", guest: 58822, host: 58822, auto_correct: true
+    xr.vm.provision "file", source: "configs/rtr_config", destination: "/home/vagrant/rtr_config"
+    
+    xr.vm.provision "shell" do |s|
+      s.path =  "scripts/apply_config.sh"
+      s.args = ["/home/vagrant/rtr_config"]
+    end
+    
+    xr.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id, "--nictype1", "virtio" ]
+      vb.customize ["modifyvm", :id, "--nictype2", "virtio" ]
+    end
+  end
+
+end
