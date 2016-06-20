@@ -2,18 +2,23 @@
 - hosts: ss-xr
 
   tasks:
-  - copy: src=/home/vagrant/cn.xml dest=/home/vagrant/cn.xml owner=vagrant
+  - name: Copy XML file 
+    copy: src=/home/vagrant/xr-lxc-app.xml dest=/home/vagrant/xr-lxc-app.xml owner=vagrant
 
-  - name: Creates directory
-    file: path=/misc/app_host/scratch/rootfs state=directory
+  - name: Copy rootf tar ball
+    copy: src=/home/vagrant/xr-lxc-app-rootfs.tar.gz dest=/misc/app_host/scratch/xr-lxc-app-rootfs.tar.gz owner=vagrant
 
-  - command: tar -zxf /misc/app_host/scratch/cn_rootfs.tar.gz -C /misc/app_host/scratch/rootfs
+  - name: Create rootfs directory
+    file: path=/misc/app_host/xr-lxc-app state=directory
+    become: yes
+
+  - command: tar -zxf /misc/app_host/scratch/xr-lxc-app-rootfs.tar.gz -C /misc/app_host/xr-lxc-app/
     become: yes
     register: output
     ignore_errors: yes
   - debug: var=output.stdout_lines
 
-  - shell: sudo -i virsh  create /home/vagrant/cn.xml
+  - shell: sudo -i virsh  create /home/vagrant/xr-lxc-app.xml
     args:
       warn: no
     register: output
