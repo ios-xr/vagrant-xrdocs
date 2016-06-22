@@ -3,16 +3,16 @@
 
   tasks:
   - name: Copy XML file 
-    copy: src=/home/vagrant/xr-lxc-app.xml dest=/home/vagrant/xr-lxc-app.xml owner=vagrant
+    copy: src=/home/vagrant/xr-lxc-app.xml dest=/home/vagrant/xr-lxc-app.xml owner=vagrant force=no
 
   - name: Copy rootfs tar ball
-    copy: src=/home/vagrant/xr-lxc-app-rootfs.tar.gz dest=/misc/app_host/scratch/xr-lxc-app-rootfs.tar.gz owner=vagrant
+    copy: src=/home/vagrant/xr-lxc-app-rootfs.tar.gz dest=/misc/app_host/scratch/xr-lxc-app-rootfs.tar.gz owner=vagrant force=no
 
   - name: Create rootfs directory
-    file: path=/misc/app_host/xr-lxc-app state=directory
+    file: path=/misc/app_host/xr-lxc-app/rootfs state=directory
     become: yes
 
-  - command: tar -zxf /misc/app_host/scratch/xr-lxc-app-rootfs.tar.gz -C /misc/app_host/xr-lxc-app/
+  - command: tar -zxf /misc/app_host/scratch/xr-lxc-app-rootfs.tar.gz -C /misc/app_host/xr-lxc-app/rootfs
     become: yes
     register: output
     ignore_errors: yes
