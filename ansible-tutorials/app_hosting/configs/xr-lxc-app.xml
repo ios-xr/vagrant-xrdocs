@@ -1,5 +1,5 @@
 <domain type='lxc' xmlns:lxc='http://libvirt.org/schemas/domain/lxc/1.0' >
-<name>cn</name>
+<name>xr-lxc-app</name>
 <memory>327680</memory>
 <os>
 <type>exe</type>
@@ -16,7 +16,7 @@
 <devices>
 <emulator>/usr/lib64/libvirt/libvirt_lxc</emulator>
 <filesystem type='mount'>
-<source dir='/misc/app_host/xr-lxc-app/'/>
+<source dir='/misc/app_host/xr-lxc-app/rootfs/'/>
 <target dir='/'/>
 </filesystem>
 <console type='pty'/>
