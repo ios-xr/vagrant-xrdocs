@@ -14,7 +14,7 @@ Vagrant.configure(2) do |config|
     devbox.vm.provision "file", source: "configs/ansible_hosts", destination: "/home/vagrant/ansible_hosts"
 
     # cn.xml - xml descript to run container
-    devbox.vm.provision "file", source: "configs/cn.xml", destination: "/home/vagrant/cn.xml"
+    devbox.vm.provision "file", source: "configs/xr-lxc-app.xml", destination: "/home/vagrant/xr-lxc-app.xml"
     
     # playbook to deploy container
     devbox.vm.provision "file", source: "configs/deploy_container.yml", destination: "/home/vagrant/deploy_container.yml"
