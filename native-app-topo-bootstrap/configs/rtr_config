@@ -1,5 +1,8 @@
 !! XR configuration
 !
+interface loopback0
+ip address 1.1.1.1/32
+!
 interface GigabitEthernet0/0/0/0
 ip address 11.1.1.10/24
 no shutdown
