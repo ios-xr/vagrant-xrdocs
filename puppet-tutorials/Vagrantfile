@@ -4,26 +4,22 @@
 
 Vagrant.configure(2) do |config|
 
-  config.vm.provider "virtualbox" do |v|
-    v.memory = 4096
-    v.cpus = 4
-  end
-
   config.vm.provision "shell", inline: "echo Hello User"
 
   config.vm.define "puppetmaster" do |pm|
     pm.vm.box = "ubuntu/xenial64"
-    #pm.vm.provision "file", source: "app_hosting/configs/ansible_env", destination:"/home/vagrant/ansible_env"
-    #pm.vm.provision "file", source: "app_hosting/configs/ansible_hosts", destination:"/home/vagrant/ansible_hosts"
-
     pm.vm.network :private_network, virtualbox__intnet: "link1", ip: "10.1.1.10"
-    pm.vm.provision :shell, path: "puppetmaster.sh", privileged: false
+    pm.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id,"--name", "Puppet-Master","--memory", "4096"]
+    end
   end
 
   config.vm.define "iosxrv" do |xrv|
     xrv.vm.box = "IOS-XRv"
     xrv.vm.network :private_network, auto_config: false, virtualbox__intnet: "link1", ip: "10.1.1.20"
-    xrv.vm.provision :shell, path: "iosxrv.sh", privileged: false
+    xrv.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id,"--name", "IOS-XRv"]
+    end
   end
 
 end
