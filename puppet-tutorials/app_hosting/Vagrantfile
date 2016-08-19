@@ -23,6 +23,7 @@ Vagrant.configure(2) do |config|
     xrv.vm.provision "file", source: "configs/agent/conft", destination: "/home/vagrant/conft"
     xrv.vm.provision "file", source: "configs/agent/puppet.conf", destination: "/home/vagrant/puppet.conf"
     xrv.vm.provision "file", source: "configs/agent/hosts", destination: "/home/vagrant/hosts"
+    xrv.vm.provision "file", source: "configs/cisco_yang.yaml", destination: "/home/vagrant/cisco_yang.yaml"
     xrv.vm.provision :shell, path: "iosxrv.sh", privileged: false
 
     xrv.vm.provision "shell" do |s|
