@@ -9,7 +9,7 @@ sudo yum install -y puppet > /dev/null
 
 export PATH=/opt/puppetlabs/puppet/bin:$PATH
 wget -q https://rubygems.org/downloads/grpc-0.15.0-x86_64-linux.gem
-sudo /opt/puppetlabs/puppet/bin/gem install --no-rdoc --no-ri grpc > /dev/null
+sudo /opt/puppetlabs/puppet/bin/gem install --no-rdoc --no-ri grpc > /dev/null 2>&1
 
 yes | sudo cp /home/vagrant/puppet.conf /etc/puppetlabs/puppet/puppet.conf
 yes | sudo cp /home/vagrant/hosts /etc/hosts

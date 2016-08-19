@@ -3,7 +3,7 @@
 yes | sudo cp /home/ubuntu/hosts /etc/hosts > /dev/null 2>&1
 
 wget -q https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
-sudo dpkg -i puppetlabs-release-pc1-xenial.deb > /dev/null 2>&1
+sudo dpkg -i puppetlabs-release-pc1-xenial.deb
 sudo apt update -qq > /dev/null 2>&1
 sudo apt-get install puppetserver -qq > /dev/null
 

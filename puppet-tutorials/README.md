@@ -1,3 +1,3 @@
-# IOSXR-Ansible-tutorial
+# IOSXR-Puppet-tutorial
 
-Link to tutorial [@xrdocs](https://xrdocs.github.io/application-hosting/tutorials/IOSXR-Ansible)
+Link to tutorial [@xrdocs](https://xrdocs.github.io/application-hosting/tutorials/IOSXR-Puppet)
