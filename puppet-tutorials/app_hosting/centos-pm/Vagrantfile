@@ -6,14 +6,26 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: "echo Hello User"
 
   config.vm.define "puppetmaster" do |pm|
-    config.ssh.username = "vagrant"
-    config.ssh.password = "vagrant"
+    # If you are using Vagrant 1.8.5, then passwordless login doesn't work.
+    # Vagrant 1.8.5 sets the permissions on ~vagrant/.ssh/authorized_keys
+    # to 0644 (world-readable) when replacing the insecure public key with
+    # a newly generated one. Since sshd will only accept keys readable just
+    # by their owner, vagrant up returns an error, since it cannot connect
+    # with the new key and it already removed the insecure key. This is
+    # Vagrant bug #7610, which affects CentOS;
+    #
+    # you can either downgrade to Vagrant 1.8.4 or wait for 1.8.6 to be released.
+    # for more info : https://seven.centos.org/2016/08/updated-centos-vagrant-images-available-v1607-01/
+
+    #config.ssh.username = "vagrant"
+    #config.ssh.password = "vagrant"
     pm.vm.box = "bento/centos-7.1"
     pm.vm.network :private_network, virtualbox__intnet: "link1", ip: "10.1.1.10"
     pm.vm.provision "file", source: "configs/master/puppet.conf", destination: "/home/vagrant/puppet.conf"
     pm.vm.provision "file", source: "configs/master/hosts", destination: "/home/vagrant/hosts"
     pm.vm.provision "file", source: "configs/master/hostname", destination: "/home/vagrant/hostname"
     pm.vm.provision "file", source: "configs/master/hosts.cfg", destination: "/home/vagrant/hosts.cfg"
+    xrv.vm.provision "file", source: "configs/master/cisco_yang.yaml", destination: "/home/vagrant/cisco_yang.yaml"
     pm.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id,"--name", "Puppet-Master","--memory", "4096"]
     end
@@ -26,7 +38,7 @@ Vagrant.configure(2) do |config|
     xrv.vm.provision "file", source: "configs/agent/conft", destination: "/home/vagrant/conft"
     xrv.vm.provision "file", source: "configs/agent/puppet.conf", destination: "/home/vagrant/puppet.conf"
     xrv.vm.provision "file", source: "configs/agent/hosts", destination: "/home/vagrant/hosts"
-    xrv.vm.provision "file", source: "configs/cisco_yang.yaml", destination: "/home/vagrant/cisco_yang.yaml"
+    xrv.vm.provision "file", source: "configs/agent/cisco_yang.yaml", destination: "/home/vagrant/cisco_yang.yaml"
     xrv.vm.provision :shell, path: "iosxrv.sh", privileged: false
 
     xrv.vm.provision "shell" do |s|

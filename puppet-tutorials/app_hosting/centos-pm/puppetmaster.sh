@@ -2,7 +2,8 @@
 
 cat /home/vagrant/hosts | sudo tee /etc/hosts
 cat /home/vagrant/hostname | sudo tee /etc/hostname
-sudo ip addr add 10.1.1.10/24 dev enp0s8
+#sudo ip addr del 10.1.1.10/24 dev enp0s8
+#sudo ip addr add 10.1.1.10/24 dev enp0s8
 
 sudo rpm --import http://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs
 sudo rpm -Uvh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
