@@ -1,0 +1,42 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+
+  config.vm.provision "shell", inline: "echo Hello User"
+
+  config.vm.define "puppetmaster" do |pm|
+    config.ssh.username = "vagrant"
+    config.ssh.password = "vagrant"
+    pm.vm.box = "bento/centos-7.1"
+    pm.vm.network :private_network, virtualbox__intnet: "link1", ip: "10.1.1.10"
+    pm.vm.provision "file", source: "configs/master/puppet.conf", destination: "/home/vagrant/puppet.conf"
+    pm.vm.provision "file", source: "configs/master/hosts", destination: "/home/vagrant/hosts"
+    pm.vm.provision "file", source: "configs/master/hostname", destination: "/home/vagrant/hostname"
+    pm.vm.provision "file", source: "configs/master/hosts.cfg", destination: "/home/vagrant/hosts.cfg"
+    pm.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id,"--name", "Puppet-Master","--memory", "4096"]
+    end
+    pm.vm.provision :shell, path: "puppetmaster.sh", privileged: false
+  end
+
+  config.vm.define "iosxrv" do |xrv|
+    xrv.vm.box = "IOS-XRv"
+    xrv.vm.network :private_network, auto_config: false, virtualbox__intnet: "link1", ip: "10.1.1.20"
+    xrv.vm.provision "file", source: "configs/agent/conft", destination: "/home/vagrant/conft"
+    xrv.vm.provision "file", source: "configs/agent/puppet.conf", destination: "/home/vagrant/puppet.conf"
+    xrv.vm.provision "file", source: "configs/agent/hosts", destination: "/home/vagrant/hosts"
+    xrv.vm.provision "file", source: "configs/cisco_yang.yaml", destination: "/home/vagrant/cisco_yang.yaml"
+    xrv.vm.provision :shell, path: "iosxrv.sh", privileged: false
+
+    xrv.vm.provision "shell" do |s|
+      s.path =  "scripts/apply_config.sh"
+      s.args = ["/home/vagrant/conft"]
+    end
+
+    xrv.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id,"--name", "IOS-XRv"]
+    end
+  end
+
+end

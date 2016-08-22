@@ -1,0 +1,10 @@
+grpc:
+  host: 127.0.0.1
+  port: 57777
+  username: vagrant
+  password: vagrant
+
+netconf:
+  host: 10.10.10.10
+  username: vagrant
+  password: vagrant
