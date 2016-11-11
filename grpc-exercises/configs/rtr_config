@@ -1,0 +1,39 @@
+!! XR configuration
+
+!
+hostname mcfly
+!
+router bgp 50
+ address-family ipv4 unicast
+ !
+ neighbor 1.1.1.1
+  remote-as 50
+  address-family ipv4 unicast
+  !
+ !
+!
+
+int loopback0
+ description gRPC Target address
+ ipv4 address 10.10.10.10/32
+!
+telemetry model-driven
+ sensor-group interface-stats
+  sensor-path Cisco-IOS-XR-infra-statsd-oper:infra-statistics/interfaces/interface/latest/generic-counters
+ !
+ subscription 30seconds
+  sensor-group-id interface-stats sample-interval 30000
+ !
+!
+!
+grpc
+  port 57789
+  tls
+!
+router static
+ address-family ipv4 unicast
+  0.0.0.0/0 MgmtEth0/RP0/CPU0/0 10.0.2.2
+  100.0.0.1/32 Null0
+ !
+!
+end

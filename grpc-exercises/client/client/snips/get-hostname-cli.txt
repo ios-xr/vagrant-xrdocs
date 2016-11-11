@@ -1,0 +1,1 @@
+sho run | inc hostname

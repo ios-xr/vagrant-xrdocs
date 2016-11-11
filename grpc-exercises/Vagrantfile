@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+
+Vagrant.configure(2) do |config|
+  
+    config.vm.box = "IOS-XRv"
+
+    #Source a config file and apply it to XR      
+    config.vm.provision "file", source: "configs/rtr_config", destination: "/home/vagrant/rtr_config"
+    config.vm.provision "file", source: "client/client.tar.gz", destination: "/home/vagrant/client.tar.gz"
+    config.vm.provision "file", source: "MOTD", destination: "/home/vagrant/MOTD"
+    config.vm.provision "file", source: "bashrc", destination: "/home/vagrant/.bashrc"
+
+    config.vm.provision "shell" do |s|
+        s.path =  "scripts/apply_config.sh"
+        s.args = ["/home/vagrant/rtr_config"]
+    end
+
+end

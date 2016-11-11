@@ -1,0 +1,14 @@
+{
+	"Cisco-IOS-XR-pfi-im-cmd-oper:interfaces": {
+	        "interface-briefs": {
+		"interface-brief": [
+		{
+			"interface-name": "Loopback0"
+		},
+		{
+			"interface-name": "GigabitEthernet0/0/0/0"
+		}
+		]
+		}
+	}
+}

@@ -1,0 +1,54 @@
+To connect to grpc on this VM, go to the client folder:
+
+	cd /home/vagrant/client/
+
+Help is available:
+
+	./client -help
+
+Execute the telemetry command (one path is already configured
+for you):
+
+	./client -device routers/Vagrant.json -oper telemetry -telsubid 30seconds
+
+Other operations are also available, such as 'get-oper' and 'get-config'.
+Any model-based command uses the '-json' argument, while CLI
+based configuration uses the '-cli' argument. This is to allow
+commit-replace to accept both CLI and YANG based configurations
+for a single commit. 
+
+Example YANG 'get-config':
+
+	./client -device routers/Vagrant.json -oper get-config -json snips/get-interfaces-cfg.json
+
+Example YANG 'merge-config' (same behavior as CLI):
+( Note, you may use 'replace-config' to replace a specific block of the configuration,
+  or you may use 'delete-config' to remove a specific block of configuration. Both
+  of these commands have similar syntax to merge-config. )
+	
+	 ./client -device routers/Vagrant.json -oper merge-config -json snips/set-hostname.json
+
+Example CLI 'show' command:
+
+	./client -device routers/Vagrant.json -oper show-cmd-text -cli snips/get-running-config-cli.txt
+
+Example CLI configuration:
+
+	./client -device routers/Vagrant.json -oper cli-config -cli snips/set-hostname-cli.txt
+
+Example full config replace with minimal diff:
+( Note, full configuration replacement takes up to two files for configuration. 
+  One of the files may be a 'regular' cli configuration, the other a JSON file
+  containing the configuration of all of the relevant YANG configs. The YANG
+  configuration files take precedent if there is a conflict, in this example 
+  I am including a FULL configuration (including the hostname 'ernie') in the
+  CLI configuration. In addition, I include a JSON configuration to set the
+  hostname to 'bert'. In the end, the hostname will be 'bert'. Any configuration
+  that is not included in either the CLI or JSON files will be assumed to be
+  the default XR value. )
+
+	 ./client -device routers/Vagrant.json -oper full-replace -cli snips/full-config.txt -json snips/set-hostname-cfg.json
+
+Additional snips in the 'snips' folder. If you encounter an issue with
+a snip, pay close attention to the -oper flag, as you may be trying to
+use an 'oper' model with a 'config' model (or the reverse).
