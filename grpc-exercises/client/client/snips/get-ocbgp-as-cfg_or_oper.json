@@ -1,9 +1,0 @@
-{
-  "openconfig-bgp:bgp": {
-   "global": {
-    "config": {
-     "as": [null]
-    }
-   } 
-  }
-}

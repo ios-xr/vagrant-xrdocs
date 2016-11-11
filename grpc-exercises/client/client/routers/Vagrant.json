@@ -1,7 +1,0 @@
-{
- "host":"10.10.10.10:57789",
- "username":"vagrant",
- "password":"vagrant",
- "tlshost":"ems.cisco.com",
- "tlspem":"/misc/config/grpc/ems.pem"
-}
