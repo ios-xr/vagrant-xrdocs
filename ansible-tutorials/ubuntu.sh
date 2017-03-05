@@ -13,7 +13,7 @@ mv ~/ansible_hosts  /home/vagrant/iosxr-ansible/remote/ansible_hosts
 mv ~/ansible_env  /home/vagrant/iosxr-ansible/remote/ansible_env
 
 
-
+sudo pip install enum34 idna ipaddress pycparser
 #cd ansible/ && sudo python setup.py install
 cd ansible/ && git checkout stable-2.2 && sudo python setup.py install
 echo "source /home/vagrant/iosxr-ansible/remote/ansible_env" >> /home/vagrant/.profile
