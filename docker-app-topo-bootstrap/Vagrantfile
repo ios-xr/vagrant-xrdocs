@@ -10,7 +10,7 @@ Vagrant.configure(2) do |config|
   
 
    config.vm.define "rtr" do |node|
-      node.vm.box =  "IOSXRv"
+      node.vm.box =  "IOS-XRv"
 
       # gig0/0/0 connected to "link1"
       # auto_config is not supported for XR, set to false
